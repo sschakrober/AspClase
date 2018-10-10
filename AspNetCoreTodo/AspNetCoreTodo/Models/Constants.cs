@@ -1,8 +1,7 @@
-namespace AspNetCoreTodo
+namespace AspNetCoreTodo.Models
 {
-    public static class Constants
+    public class Constants
     {
         public const string AdministratorRole = "Administrator";
-        
     }
 }

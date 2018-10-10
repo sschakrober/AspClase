@@ -15,7 +15,24 @@ namespace AspNetCoreTodo
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var host = CreateWebHostBuilder(args).Build();
+            InitializeDatabase(host);
+            host.Run();
+        }
+        private static void InitializeDatabase(IWebHost host)
+        {
+            using (var scope = host.Services.CreateScope())
+            try
+            {
+                SeedData.InitializeAsync(services).Wait();
+            }
+            catch (Exception ex)
+            {
+                var logger = services
+                .GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "Error occurred seeding the DB.");
+            }
+            
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

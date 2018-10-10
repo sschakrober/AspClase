@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreTodo.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.WebSockets.Internal;
+//using Microsoft.AspNetCore.WebSockets.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
