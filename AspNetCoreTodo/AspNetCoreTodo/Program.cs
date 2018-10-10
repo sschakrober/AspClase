@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace AspNetCoreTodo
 {
@@ -22,21 +22,22 @@ namespace AspNetCoreTodo
         private static void InitializeDatabase(IWebHost host)
         {
             using (var scope = host.Services.CreateScope())
-            try
             {
-                SeedData.InitializeAsync(services).Wait();
+                var services = scope.ServiceProvider;
+                try
+                {
+                    SeedData.InitializeAsync(services).Wait();
+                }
+                catch (Exception ex)
+                {
+                    var logger = services
+                    .GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "Error occurred seeding the DB.");
+                }
             }
-            catch (Exception ex)
-            {
-                var logger = services
-                .GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "Error occurred seeding the DB.");
-            }
-            
         }
-
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+            .UseStartup<Startup>();
     }
 }
